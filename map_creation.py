@@ -10,8 +10,6 @@ except:
     import tilemap_math as tm
     from PIL import Image
 
-
-
 class createMap:
 
     def __init__(self,lat,lng,zoom=16):
@@ -86,6 +84,8 @@ class createMap:
         return map_img
 
 if __name__ == '__main__':
-    gmd = createMap(latitude, longitude, zoomlevel) #add the top left corner latlng coordinates of the area you want and the zoom level
+    '''
+    gmd = createMap(lat,lon,zoomlevel) #add the top left corner latlng coordinates of the area you want and the zoom level
     img = gmd.generateImage()
     img.save('map.png')
+    '''

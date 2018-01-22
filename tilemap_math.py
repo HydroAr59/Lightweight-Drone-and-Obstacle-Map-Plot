@@ -1,6 +1,5 @@
 import math
 
-
 def deg2num(lat_deg, lon_deg, zoom):
   lat_rad = math.radians(lat_deg)
   n = 2.0 ** zoom
@@ -26,25 +25,25 @@ def latlng2tilenum(lat,lng,zoom):
     return (int(nxcoord3), int(nycoord3))
 
 def tilenum2pix(tilenum):
-    btmleft = (2660673,5747747) #origin
-    return (tilenum[0] - btmleft[0], btmleft[1] - tilenum[1])
+    with open("map_info.txt", "r") as map_info:
+        tuple = (map_info.read().split(','))
+        btmleft = (int(tuple[0]),int(tuple[1])) #origin
+        return (tilenum[0] - btmleft[0], btmleft[1] - tilenum[1])
 
-def latlng2pix(lat,lng,zoom):
+def latlng2pix(lat,lng):
     #need to get bottom left corner of the map in tilenum to set as the origin
-    try:
-        with open("map_info.txt","r") as map_info:
-            tuple = (map_info.read().split(','))
-            btmleft = (tuple[0],tuple[1])  # origin
-            xpoint3, ypoint3 = deg2num(lat, lng, zoom)
+    with open("map_info.txt","r") as map_info:
+        tuple = (map_info.read().split(','))
+        btmleft = (tuple[0],tuple[1])  # origin
+        xpoint3, ypoint3 = deg2num(lat, lng, int(tuple[2]))
 
-            ycoord3 = ypoint3 * 2 ** zoom
-            nycoord3 = ycoord3
+        ycoord3 = ypoint3 * 2 ** int(tuple[2])
+        nycoord3 = ycoord3
 
-            xcoord3 = xpoint3 * 2 ** zoom
-            nxcoord3 = xcoord3
+        xcoord3 = xpoint3 * 2 ** int(tuple[2])
+        nxcoord3 = xcoord3
 
-            return (int(nxcoord3) - int(btmleft[0]), int(btmleft[1]) - int(nycoord3))
-    except:
-        print("map_info.txt not found")
+        return (int(nxcoord3) - int(btmleft[0]), int(btmleft[1]) - int(nycoord3))
+
 
 

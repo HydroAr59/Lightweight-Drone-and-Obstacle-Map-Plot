@@ -2,11 +2,13 @@ try:
     import tkinter as tk
     from PIL import Image, ImageTk
     import tilemap_math as tm
+    import map_creation
 
 except:
     import Tkinter as tk
     from PIL import Image, ImageTk
     import tilemap_math as tm
+    import map_creation
 
 class Window(tk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -39,9 +41,12 @@ class Window(tk.Frame):
 
 if __name__ == '__main__':
 
-    #TODO: using the turtle module to make smoother and better looking drone movements on map instead of drawing in canvas.
-    with open("map_info.txt", "r") as map_info:
-        zoom = (map_info.read().split(','))[2]
+    if (input("Would you like to download a map?(yes/no): ").strip().lower() == "yes"):
+        latlon = input("Enter latitude,longitude,zoomlevel e.g.'49.2134,-122.73832,17': ")
+        user_inputs = latlon.strip().split(',')
+        gmd = map_creation.createMap(float(user_inputs[0]),float(user_inputs[1]),int(user_inputs[2]))  # add the top left corner latlng coordinates of the area you want and the zoom level
+        img = gmd.generateImage()
+        img.save('map.png')
 
     root = tk.Tk()
     root.title("UAV Tracking")
@@ -50,8 +55,9 @@ if __name__ == '__main__':
 
     map_bg = Window(root, file_name = "map.png")
 
-    #map_bg.draw_drone(tm.latlng2pix(49.214043, -122.868487,16),10)
-	#sample of how to draw the drone location. 
+    # sample of how to draw the drone location.
+    map_bg.draw_drone(tm.latlng2pix(49.222531, -122.883727),10)
+
 
     map_bg.pack()
     root.mainloop()
